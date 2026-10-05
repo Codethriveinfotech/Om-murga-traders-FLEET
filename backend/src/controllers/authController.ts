@@ -21,10 +21,10 @@ export const register = async (req: Request, res: Response) => {
     const newId = require('crypto').randomUUID();
 
     await prisma.$executeRawUnsafe(
-      `INSERT INTO users (id, email, "passwordHash", "firstName", "lastName", role, "phoneNumber", "isActive", "createdAt", "updatedAt", name, phone, password_hash, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, true, NOW(), NOW(), $8, $9, $10, NOW(), NOW())`,
-      newId, email, passwordHash, firstName, lastName, (role || 'DRIVER').toUpperCase(), phone || null,
-      name || '', phone || '', passwordHash
+      `INSERT INTO users (id, email, "passwordHash", "firstName", "lastName", role, "phoneNumber", "isActive", "createdAt", "updatedAt", name, phone, password_hash, created_at, updated_at, license_number)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, true, NOW(), NOW(), $8, $9, $10, NOW(), NOW(), $11)`,
+      newId, email || null, passwordHash, firstName, lastName, (role || 'DRIVER').toUpperCase(), phone || null,
+      name || '', phone || '', passwordHash, req.body.licenseNumber || null
     );
     return res.status(201).json({ success: true, message: 'User registered successfully', data: { id: newId } });
   } catch (error: any) {

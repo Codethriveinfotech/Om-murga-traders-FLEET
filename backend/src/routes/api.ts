@@ -139,14 +139,54 @@ router.delete('/vehicles/:id', async (req, res) => {
 // ================= USERS (DRIVERS) =================
 router.get('/users', async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
-    sendSuccess(res, users.map(mapUser));
+    const rows: any[] = await prisma.$queryRawUnsafe(`SELECT * FROM users`);
+    const users = rows.map((u: any) => ({
+      id: u.id,
+      email: u.email,
+      role: u.role,
+      name: u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim(),
+      phone: u.phone || u.phoneNumber || '',
+      licenseNumber: u.license_number || '',
+      isActive: u.isActive
+    }));
+    sendSuccess(res, users);
   } catch (e) { sendError(res, e); }
 });
 
 router.put('/users/:id', async (req, res) => {
   try {
-    const user = await prisma.user.update({ where: { id: req.params.id }, data: req.body });
+    const b = req.body;
+    const oldRows: any[] = await prisma.$queryRawUnsafe(`SELECT * FROM users WHERE id = $1`, req.params.id);
+    if (!oldRows.length) return res.status(404).json({ success: false, message: 'User not found' });
+    const old = oldRows[0];
+
+    let passHash = old.passwordHash || old.password_hash;
+    if (b.password) {
+      const bcrypt = require('bcryptjs');
+      passHash = await bcrypt.hash(b.password, 10);
+    }
+
+    const nameParts = (b.name || old.name || '').split(' ');
+    const firstName = nameParts[0] || old.firstName || '';
+    const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : (old.lastName || '');
+
+    await prisma.$executeRawUnsafe(
+      `UPDATE users SET
+         "firstName" = $1, "lastName" = $2, "phoneNumber" = $3, email = $4, "passwordHash" = $5,
+         name = $6, phone = $7, license_number = $8, password_hash = $9, "updatedAt" = NOW(), updated_at = NOW()
+       WHERE id = $10`,
+      firstName,
+      lastName,
+      b.phone !== undefined ? b.phone : old.phoneNumber,
+      b.email !== undefined ? (b.email || null) : old.email,
+      passHash,
+      b.name !== undefined ? b.name : old.name,
+      b.phone !== undefined ? b.phone : old.phone,
+      b.licenseNumber !== undefined ? (b.licenseNumber || null) : old.license_number,
+      passHash,
+      req.params.id
+    );
+
     sendSuccess(res, true);
   } catch (e) { sendError(res, e); }
 });
