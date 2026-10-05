@@ -412,7 +412,7 @@ export default function TripsTab() {
                   {/* Odometer progress */}
                   <View style={{ flex: 1.5, alignItems: 'flex-end', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 13, fontWeight: '700', color: '#1E293B', fontFamily: fontStyle, textAlign: 'right' }}>
-                      {trip.startOdometer} km <Text style={{ color: '#94A3B8', fontWeight: '500' }}>→</Text> {trip.endOdometer ? `${trip.endOdometer} km` : 'Active'}
+                      {trip.startOdometer} km <Text style={{ color: '#94A3B8', fontWeight: '500' }}>→</Text> {trip.endOdometer ? `${trip.endOdometer} km` : '-'}
                     </Text>
                     {trip.endOdometer ? (
                       <Text style={{ fontSize: 11, fontWeight: '600', color: '#10B981', marginTop: 2, fontFamily: fontStyle, textAlign: 'right' }}>
@@ -424,7 +424,7 @@ export default function TripsTab() {
                   {/* HMR Progress */}
                   <View style={{ flex: 1.5, alignItems: 'flex-end', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 13, fontWeight: '700', color: '#0284C7', fontFamily: fontStyle, textAlign: 'right' }}>
-                      {trip.startHmr || '0'} <Text style={{ color: '#94A3B8', fontWeight: '500' }}>→</Text> {trip.endHmr ? `${trip.endHmr} hrs` : 'Active'}
+                      {trip.startHmr || '0'} <Text style={{ color: '#94A3B8', fontWeight: '500' }}>→</Text> {trip.endHmr ? `${trip.endHmr} hrs` : '-'}
                     </Text>
                     {trip.endHmr ? (
                       <Text style={{ fontSize: 11, fontWeight: '600', color: '#0284C7', marginTop: 2, fontFamily: fontStyle, textAlign: 'right' }}>
@@ -589,7 +589,7 @@ export default function TripsTab() {
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
                           <Text style={{ fontSize: 12, fontWeight: '700', color: '#64748B', fontFamily: fontStyle }}>END HMR</Text>
                           <Text style={{ fontSize: 12, fontWeight: '800', color: '#0284C7', fontFamily: fontStyle }}>
-                            {selectedTrip.endHmr ? `${selectedTrip.endHmr} hrs` : 'Active'}
+                            {selectedTrip.endHmr ? `${selectedTrip.endHmr} hrs` : '-'}
                           </Text>
                         </View>
                         {isDone && selectedTrip.startHmr && selectedTrip.endHmr && (

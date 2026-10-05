@@ -134,7 +134,7 @@ export default function ReportsTab() {
       headers = [
         'S.No', 'Date', 'Time', 'Operator Driver', 'Vehicle No', 'Source', 'Destination', 
         'Start Odometer (KM)', 'End Odometer (KM)', 'Distance Run (KM)', 
-        'Start HMR (HRS)', 'End HMR (HRS)', 'HMR Worked (HRS)', 'Fuel Level', 'Fuel Filling HMR', 'Fuel Cost (₹)', 'Status', 'Breakdown'
+        'Start HMR (HRS)', 'End HMR (HRS)', 'HMR Worked (HRS)', 'Fuel Level', 'Fuel Filling HMR', 'Status', 'Breakdown'
       ];
       rows = filteredTrips.map((t, idx) => {
         const d = drivers.find(drv => drv.id === t.driverId)?.name || 'Unknown';
@@ -159,11 +159,10 @@ export default function ReportsTab() {
           t.endOdometer || '0',
           t.endOdometer ? dist.toString() : '0',
           t.startHmr || '0',
-          t.endHmr || (t.status === 'started' ? 'Active' : '0'),
-          t.endHmr ? hmr.toFixed(1) : 'Active',
+          t.endHmr || (t.status === 'started' ? '-' : '0'),
+          t.endHmr ? hmr.toFixed(1) : '-',
           t.fuelLevel || t.fuel_level || '',
           t.notes || '',
-          fuelCost.toFixed(2),
           t.status || '',
           t.isBreakdown ? 'YES' : 'NO'
         ];
@@ -180,14 +179,10 @@ export default function ReportsTab() {
         const end = parseFloat(t.endHmr) || 0;
         return acc + (end >= start ? (end - start) : 0);
       }, 0);
-      const totalFuelCost = filteredTrips.reduce((acc, t) => {
-        const tripFuel = fuelLogs.filter(f => f.vehicleId === t.vehicleId && (f.date === t.startDate || f.date === t.endDate));
-        return acc + tripFuel.reduce((sum, f) => sum + (parseFloat(f.cost) || 0), 0);
-      }, 0);
       rows.push([
         'TOTAL', '', '', '', '', '', '', 
         '', '', totalDistance.toString(), 
-        '', '', totalHmrWorked.toFixed(1), '', '', totalFuelCost.toFixed(2), '', ''
+        '', '', totalHmrWorked.toFixed(1), '', '', '', ''
       ]);
 
     } else if (selectedReportType === 'Fuel Report') {
@@ -727,7 +722,6 @@ export default function ReportsTab() {
                   <Text style={{ flex: 1.0, textAlign: 'right', fontFamily: fontStyle, fontSize: 12, fontWeight: '800', color: '#475569', paddingRight: 6 }}>HMR WORKED</Text>
                   <Text style={{ flex: 1.0, textAlign: 'center', fontFamily: fontStyle, fontSize: 12, fontWeight: '800', color: '#475569', paddingRight: 6 }}>FUEL LEVEL</Text>
                   <Text style={{ flex: 1.2, textAlign: 'center', fontFamily: fontStyle, fontSize: 12, fontWeight: '800', color: '#475569', paddingRight: 6 }}>FUEL FILLING HMR</Text>
-                  <Text style={{ flex: 0.9, textAlign: 'right', fontFamily: fontStyle, fontSize: 12, fontWeight: '800', color: '#475569', paddingRight: 10 }}>FUEL (₹)</Text>
                 </View>
                 {filteredTrips.map((t, idx) => {
                   const d = drivers.find(drv => drv.id === t.driverId)?.name || 'Unknown';
@@ -756,11 +750,10 @@ export default function ReportsTab() {
                       <Text style={{ flex: 0.9, textAlign: 'right', fontFamily: fontStyle, fontSize: 13, color: '#334155', paddingRight: 6 }}>{t.endOdometer || '0'}</Text>
                       <Text style={{ flex: 0.9, textAlign: 'right', fontWeight: '700', fontFamily: fontStyle, fontSize: 13, color: '#1E293B', paddingRight: 6 }}>{t.endOdometer ? `${distVal} km` : '0 km'}</Text>
                       <Text style={{ flex: 0.9, textAlign: 'right', fontFamily: fontStyle, fontSize: 13, color: '#334155', paddingRight: 6 }}>{t.startHmr || '0'}</Text>
-                      <Text style={{ flex: 0.9, textAlign: 'right', fontFamily: fontStyle, fontSize: 13, color: '#334155', paddingRight: 6 }}>{t.endHmr || 'Active'}</Text>
-                      <Text style={{ flex: 1.0, textAlign: 'right', fontWeight: '700', fontFamily: fontStyle, fontSize: 13, color: '#0284C7', paddingRight: 6 }}>{t.endHmr ? `${hmrWorkedVal.toFixed(1)} hrs` : 'Active'}</Text>
+                      <Text style={{ flex: 0.9, textAlign: 'right', fontFamily: fontStyle, fontSize: 13, color: '#334155', paddingRight: 6 }}>{t.endHmr || '-'}</Text>
+                      <Text style={{ flex: 1.0, textAlign: 'right', fontWeight: '700', fontFamily: fontStyle, fontSize: 13, color: '#0284C7', paddingRight: 6 }}>{t.endHmr ? `${hmrWorkedVal.toFixed(1)} hrs` : '-'}</Text>
                       <Text style={{ flex: 1.0, textAlign: 'center', fontFamily: fontStyle, fontSize: 13, color: '#334155', paddingRight: 6 }}>{fuelLevelVal}</Text>
                       <Text style={{ flex: 1.2, textAlign: 'center', fontFamily: fontStyle, fontSize: 13, color: '#334155', paddingRight: 6 }}>{fuelFillingHmrVal}</Text>
-                      <Text style={{ flex: 0.9, textAlign: 'right', fontWeight: '700', fontFamily: fontStyle, fontSize: 13, color: fuelCost > 0 ? '#10B981' : '#94A3B8', paddingRight: 10 }}>{fuelCost > 0 ? `₹${fuelCost}` : '—'}</Text>
                     </View>
                   );
                 })}
