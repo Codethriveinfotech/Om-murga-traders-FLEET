@@ -5,7 +5,7 @@ function createWindow() {
   const win = new BrowserWindow({
     width: 1280,
     height: 800,
-    title: "Fleet Management Central",
+    title: "Ohm Murga Traders Central",
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: false,

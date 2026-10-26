@@ -92,7 +92,7 @@ fun SplashScreen(onFinished: (nextRoute: String) -> Unit) {
             
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = "FLEET MANAGEMENT",
+                    text = "OHM MURGA TRADERS",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Black,
                     color = BrandDark,

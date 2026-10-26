@@ -101,7 +101,7 @@ function DashboardLayoutContent() {
           </View>
           <View>
             <Text style={styles.sidebarTitle}>FleetPro</Text>
-            <Text style={styles.sidebarSubtitle}>Fleet Management</Text>
+            <Text style={styles.sidebarSubtitle}>Ohm Murga Traders</Text>
           </View>
         </View>
 
