@@ -14,7 +14,7 @@ object RetrofitClient {
     // private const val BASE_URL = "http://10.0.2.2:8080/"
     
     // Use this for the live production server (uncomment when deploying)
-    private const val BASE_URL = "https://vehicletrackingapp-fdy2.onrender.com/"
+    private const val BASE_URL = "https://om-murga-traders-fleet.onrender.com/"
 
     fun create(sessionManager: SessionManager): ApiService {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
