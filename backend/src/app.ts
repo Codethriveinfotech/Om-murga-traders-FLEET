@@ -59,10 +59,13 @@ app.get('/test-db-network', (req, res) => {
 
 import apiRoutes from './routes/api';
 
-// API Routes
+// API Routes (supports both with and without /api prefix)
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
+app.use('/v1/notifications', notificationRoutes);
 app.use('/api', apiRoutes);
+app.use('/', apiRoutes);
 
 // Global Error Handler
 app.use(errorMiddleware);

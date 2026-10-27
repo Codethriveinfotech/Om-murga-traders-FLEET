@@ -2,7 +2,8 @@ import axios from 'axios';
 import * as SecureStore from '../utils/storage';
 import { useAuthStore } from '../store/auth';
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL || 'https://om-murga-traders-fleet.onrender.com/api';
+const rawUrl = (process.env.EXPO_PUBLIC_API_URL || 'https://om-murga-traders-fleet.onrender.com/api').trim().replace(/\/+$/, '');
+const API_URL = rawUrl.endsWith('/api') ? rawUrl : `${rawUrl}/api`;
 
 export const apiClient = axios.create({
   baseURL: API_URL,
