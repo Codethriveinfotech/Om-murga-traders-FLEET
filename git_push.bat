@@ -1,5 +1,5 @@
 @echo off
-cd /d "d:\priyanga\codethrive\FLEET-MANGEMENT"
+cd /d "%~dp0"
 echo === Git Status ===
 git status
 echo.

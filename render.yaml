@@ -8,21 +8,14 @@ services:
     dockerfilePath: backend/Dockerfile
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: vehicle-tracking-db
-          property: connectionString
-      - key: DATABASE_USER
-        sync: false
-      - key: DATABASE_PASSWORD
-        sync: false
+        value: "postgresql://neondb_owner:npg_KExeCVN9RH2r@ep-young-scene-b525tips-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+      - key: PORT
+        value: "8080"
+      - key: NODE_ENV
+        value: "production"
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_ISSUER
-        value: "https://your-render-app-url.onrender.com"
+        value: "https://vehicle-tracking-backend.onrender.com"
       - key: JWT_AUDIENCE
-        value: "https://your-render-app-url.onrender.com"
-
-databases:
-  - name: vehicle-tracking-db
-    plan: free
-    region: oregon
+        value: "https://vehicle-tracking-backend.onrender.com"

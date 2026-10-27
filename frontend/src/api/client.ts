@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as SecureStore from '../utils/storage';
 import { useAuthStore } from '../store/auth';
 
-const API_URL = 'https://vehicletrackingapp-fdy2.onrender.com/api';
+const API_URL = process.env.EXPO_PUBLIC_API_URL || 'https://vehicletrackingapp-fdy2.onrender.com/api';
 
 export const apiClient = axios.create({
   baseURL: API_URL,

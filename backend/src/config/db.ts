@@ -6,11 +6,11 @@ import { logger } from '../utils/logger';
 
 neonConfig.webSocketConstructor = ws;
 
-let dbUrl = 'postgresql://neondb_owner:npg_Njtby5QdhCf0@ep-frosty-butterfly-ax6itycw-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require';
+let dbUrl = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_KExeCVN9RH2r@ep-young-scene-b525tips-pooler.c-7.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require';
 
 // Force Neon connection to use the -pooler endpoint to avoid Serverless cold start timeouts
-if (dbUrl.includes('ep-frosty-butterfly-ax6itycw.c-4') && !dbUrl.includes('-pooler')) {
-  dbUrl = dbUrl.replace('ep-frosty-butterfly-ax6itycw.c-4', 'ep-frosty-butterfly-ax6itycw-pooler.c-4');
+if (dbUrl.includes('.neon.tech') && !dbUrl.includes('-pooler')) {
+  dbUrl = dbUrl.replace(/\.c-([a-zA-Z0-9_-]+)\./, '-pooler.c-$1.');
 }
 
 const pool = new Pool({ connectionString: dbUrl });

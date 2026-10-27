@@ -11,6 +11,7 @@
     "backend:dev": "npm run dev --workspace=backend",
     "backend:build": "npm run build --workspace=backend",
     "frontend:start": "npm run start --workspace=frontend",
+    "frontend:build": "npm run shared:build && npm run web:build --workspace=frontend",
     "shared:build": "npm run build --workspace=shared"
   },
   "dependencies": {

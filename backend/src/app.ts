@@ -42,7 +42,7 @@ app.get('/health', (req, res) => {
 
 import net from 'net';
 app.get('/test-db-network', (req, res) => {
-  const host = 'ep-frosty-butterfly-ax6itycw-pooler.c-4.us-east-2.aws.neon.tech';
+  const host = 'ep-young-scene-b525tips-pooler.c-7.us-east-2.aws.neon.tech';
   const port = 5432;
   const client = net.connect({ host, port, timeout: 5000 }, () => {
     res.json({ success: true, message: `Successfully connected to ${host}:${port}` });
